@@ -5,16 +5,30 @@
   <p><%= Faker::Restaurant.description %></p>
 
   <div>
-    <h3>Reviews</h3>
-    <!-- Need to add all the reviews here -->
-    <% @restaurant.reviews.each do |review| %>
-      <p>Rating: <%= review.rating %></p>
-      <p>Comment: <%= review.content %></p>
-    <% end %>
+    <h5>Reviews</h5>
+    <div class="card mb-3" style="width: 18rem;">
+      <ul class="list-group list-group-flush">
+        <% if @restaurant.reviews.any? %>
+          <% @restaurant.reviews.each do |review| %>
+            <li class="list-group-item">
+              <p>Rating: <%= review.rating %>/5</p>
+              <p>Comment: <%= review.content %></p>
+            </li>
+          <% end %></div>
+      </ul>
+        <% else %>
+          <p>No reviews yet.</p>
+        <% end %>
   </div>
 
-  <div class="d-flex">
+  <h5>Add a new review</h5>
+  <%= simple_form_for [@restaurant, @review] do |f| %>
+    <%= f.input :rating, collection: 0..5, include_blank: false %>
+    <%= f.input :content %>
+    <%= f.submit class:'btn btn-primary' %>
+  <% end %>
+
+  <div class="d-flex mt-3 mb-3">
     <%= link_to 'Back to restaurants', restaurants_path, class: 'btn btn-secondary me-3'  %>
-    <%= link_to 'Add a review', new_restaurant_review_path(@restaurant), class: 'btn btn-secondary'  %>
   </div>
 </div>
